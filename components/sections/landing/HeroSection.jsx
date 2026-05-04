@@ -27,7 +27,7 @@ export default function Hero() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="absolute top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-6xl z-20"
+        className="absolute top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-350 z-20"
       >
         <div className="flex items-center justify-between px-6 py-5 rounded-full backdrop-blur-md bg-white/40 border border-white/60 shadow-lg">
           {/* Logo */}

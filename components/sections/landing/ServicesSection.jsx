@@ -39,62 +39,64 @@ const services = [
 export default function Services() {
   return (
     <section className="py-20 bg-gray-100 relative">
-      {/* Heading */}
-      <div className="flex justify-center mb-14">
-        <div className="px-8 py-4 rounded-full bg-white shadow-md text-lg font-semibold">
-          Our Services
+      <div className="max-w-350 mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Heading */}
+        <div className="flex justify-center mb-14">
+          <div className="px-8 py-4 rounded-full bg-white shadow-md text-lg font-semibold">
+            Our Services
+          </div>
         </div>
-      </div>
 
-      {/* Grid */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={{
-          visible: {
-            transition: {
-              staggerChildren: 0.15,
-            },
-          },
-        }}
-        className="grid gap-8 px-6 sm:px-10 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto"
-      >
-        {services.map((service, index) => (
-          <motion.div
-            key={index}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: "easeOut" },
+        {/* Grid */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
               },
-            }}
-            className="bg-[#cfe8f3] border border-cyan-400 rounded-[30px] p-6 text-center shadow-md hover:shadow-xl transition-all duration-300"
-          >
-            {/* Icon */}
-            <div className="flex justify-center mb-4">
-              <Image
-                src={service.icon}
-                alt={service.title}
-                width={50}
-                height={50}
-              />
-            </div>
+            },
+          }}
+          className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6, ease: "easeOut" },
+                },
+              }}
+              className="bg-[#cfe8f3] border border-cyan-400 rounded-[30px] p-6 text-center shadow-md hover:shadow-xl transition-all duration-300"
+            >
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                <Image
+                  src={service.icon}
+                  alt={service.title}
+                  width={50}
+                  height={50}
+                />
+              </div>
 
-            {/* Title */}
-            <h3 className="text-lg font-semibold mb-2 text-gray-900">
-              {service.title}
-            </h3>
+              {/* Title */}
+              <h3 className="text-lg font-semibold mb-2 text-gray-900">
+                {service.title}
+              </h3>
 
-            {/* Description */}
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {service.desc}
-            </p>
-          </motion.div>
-        ))}
-      </motion.div>
+              {/* Description */}
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {service.desc}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 }
