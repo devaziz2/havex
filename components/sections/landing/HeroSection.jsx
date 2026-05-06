@@ -2,12 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { motion } from "framer-motion";
+import Header from "@/components/common/Header";
 
 export default function Hero() {
-  const [open, setOpen] = useState(false);
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Image */}
@@ -23,90 +21,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Header */}
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="absolute top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-350 z-20"
-      >
-        <div className="flex items-center justify-between px-6 py-5 rounded-full backdrop-blur-md bg-white/40 border border-white/60 shadow-lg">
-          {/* Logo */}
-          <Image
-            src="/logo.png"
-            alt="HAVEX logo"
-            width={120}
-            height={40}
-            priority
-            className="object-contain"
-          />
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-8 text-sm text-black font-medium">
-            <Link href="#about" className="hover:text-gray-800 transition">
-              About us
-            </Link>
-            <Link href="#services" className="hover:text-gray-800 transition">
-              Services
-            </Link>
-            <Link href="#contact" className="hover:text-gray-800 transition">
-              Contact us
-            </Link>
-          </nav>
-
-          {/* Mobile Hamburger */}
-          <button
-            onClick={() => setOpen(true)}
-            className="md:hidden text-black"
-          >
-            <Menu size={28} />
-          </button>
-        </div>
-      </motion.header>
-
-      {/* Drawer */}
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black z-30"
-              onClick={() => setOpen(false)}
-            />
-
-            {/* Drawer Panel */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="fixed top-0 right-0 h-full w-[75%] max-w-sm bg-white z-40 shadow-xl p-6"
-            >
-              {/* Close Icon */}
-              <div className="flex justify-end">
-                <button onClick={() => setOpen(false)}>
-                  <X size={28} />
-                </button>
-              </div>
-
-              {/* Links */}
-              <nav className="mt-10 flex flex-col gap-6 text-lg font-medium text-black">
-                <Link href="#about" onClick={() => setOpen(false)}>
-                  About us
-                </Link>
-                <Link href="#services" onClick={() => setOpen(false)}>
-                  Services
-                </Link>
-                <Link href="#contact" onClick={() => setOpen(false)}>
-                  Contact us
-                </Link>
-              </nav>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <Header variant="overlay" />
 
       {/* Hero Content */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center h-full px-4">

@@ -72,27 +72,40 @@ export default function Services() {
                   transition: { duration: 0.6, ease: "easeOut" },
                 },
               }}
-              className="bg-[#cfe8f3] border border-cyan-400 rounded-[30px] p-6 text-center shadow-md hover:shadow-xl transition-all duration-300"
+              className="relative max-w-[380px] w-full mx-auto"
             >
-              {/* Icon */}
-              <div className="flex justify-center mb-4">
-                <Image
-                  src={service.icon}
-                  alt={service.title}
-                  width={50}
-                  height={50}
-                />
+              {/* Polygon Wrapper */}
+              <div
+                className="overflow-hidden"
+                style={{
+                  clipPath:
+                    "polygon(0 0, 100% 0, 100% 20%, 100% 73%, 78% 100%, 38% 100%, 0 100%, 0% 20%)",
+                  borderRadius: "30px", // gives soft rounded effect
+                }}
+              >
+                {/* Actual Card */}
+                <div className="bg-[#cfe8f3] border border-cyan-400 p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 h-full min-h-[300px]">
+                  {/* Icon */}
+                  <div className="flex justify-center mb-4">
+                    <Image
+                      src={service.icon}
+                      alt={service.title}
+                      width={50}
+                      height={50}
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold mb-2 text-gray-900">
+                    {service.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    {service.desc}
+                  </p>
+                </div>
               </div>
-
-              {/* Title */}
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-sm text-gray-700 leading-relaxed">
-                {service.desc}
-              </p>
             </motion.div>
           ))}
         </motion.div>
