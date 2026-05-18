@@ -52,7 +52,7 @@ export default function Hero() {
           transition={{ delay: 0.7, duration: 0.5 }}
           className="mt-8"
         >
-          <Link href="#contact">
+          <Link href="/contact">
             <button
               className="px-6 py-3 rounded-full cursor-pointer text-white text-sm md:text-base font-semibold
              bg-gradient-to-b from-[#2563EB] to-[#1E293B]

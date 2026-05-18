@@ -1,4 +1,8 @@
-import Header from "@/components/common/Header";
+import AboutHero from "@/components/sections/about/AboutHero";
+import AboutIntroSection from "@/components/sections/about/AboutIntroSection";
+import AboutFeaturesSection from "@/components/sections/about/AboutFeaturesSection";
+import AboutWhyHavexSection from "@/components/sections/about/AboutWhyHavexSection";
+import AboutContactSection from "@/components/sections/about/AboutContactSection";
 import Footer from "@/components/sections/landing/Footer";
 
 export const metadata = {
@@ -9,21 +13,11 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-1 flex items-center justify-center px-6 py-24">
-        <div className="text-center max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-cyan-500 mb-6">
-            About Us
-          </h1>
-          <p className="text-gray-600 text-lg leading-relaxed">
-            HAVEX is a modern technology company dedicated to delivering
-            innovative digital solutions for businesses worldwide. We specialize
-            in VoIP services, DevOps solutions, web development, mobile app
-            development, and communication systems that improve efficiency and
-            connectivity.
-          </p>
-        </div>
-      </main>
+      <AboutHero />
+      <AboutIntroSection />
+      <AboutFeaturesSection />
+      <AboutWhyHavexSection />
+      <AboutContactSection />
       <Footer />
     </div>
   );

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -16,7 +16,15 @@ const navLinks = [
 
 export default function Header({ variant = "default" }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (variant !== "overlay") return;
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [variant]);
 
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
@@ -45,9 +53,19 @@ export default function Header({ variant = "default" }) {
           initial={{ y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="absolute top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-350 z-20"
+          className={`${
+            scrolled
+              ? "fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-5xl z-50"
+              : "absolute top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-350 z-20"
+          } transition-all duration-300`}
         >
-          <div className="flex items-center justify-between px-6 py-5 rounded-full backdrop-blur-md bg-white/40 border border-white/60 shadow-lg">
+          <div
+            className={`flex items-center justify-between px-6 py-5 rounded-full shadow-lg transition-all duration-300 ${
+              scrolled
+                ? "bg-white/95 backdrop-blur-md border border-white/80"
+                : "backdrop-blur-md bg-white/40 border border-white/60"
+            }`}
+          >
             <Link href="/">
               <Image
                 src="/logo.png"
@@ -61,7 +79,17 @@ export default function Header({ variant = "default" }) {
 
             <nav className="hidden md:flex gap-8 text-sm font-medium">
               {navLinks.map(({ label, href }) => (
-                <Link key={href} href={href} className={linkClass(href)}>
+                <Link
+                  key={href}
+                  href={href}
+                  className={`transition-all duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:rounded-full after:transition-all after:duration-200 ${
+                    isActive(href)
+                      ? "text-cyan-500 after:w-full after:bg-cyan-500"
+                      : scrolled
+                        ? "text-gray-800 hover:text-cyan-500 after:w-0 hover:after:w-full after:bg-cyan-500"
+                        : "text-white hover:text-cyan-300 after:w-0 hover:after:w-full after:bg-cyan-300"
+                  }`}
+                >
                   {label}
                 </Link>
               ))}
@@ -69,7 +97,7 @@ export default function Header({ variant = "default" }) {
 
             <button
               onClick={() => setOpen(true)}
-              className="md:hidden text-black"
+              className={`md:hidden ${scrolled ? "text-gray-800" : "text-white"}`}
             >
               <Menu size={28} />
             </button>

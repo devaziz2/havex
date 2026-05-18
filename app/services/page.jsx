@@ -8,6 +8,11 @@ import VicidialSection2 from "@/components/sections/service/VicidailSection2";
 import VicidailSolution from "@/components/sections/service/VicidailSolution";
 import React from "react";
 
+export const metadata = {
+  title: "Services | HAVEX",
+  description: "Explore HAVEX services including VoIP, PBX, DevOps, and more.",
+};
+
 function ServicesPage() {
   return (
     <div>
