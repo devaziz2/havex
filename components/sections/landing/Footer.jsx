@@ -2,6 +2,7 @@
 
 import { Phone, Mail } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -61,10 +62,18 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-gray-700">QUICK LINKS</h3>
             <ul className="space-y-2 text-gray-600 text-sm">
-              <li className="hover:text-black cursor-pointer">Services</li>
-              <li className="hover:text-black cursor-pointer">Our Vision</li>
-              <li className="hover:text-black cursor-pointer">Our Mission</li>
-              <li className="hover:text-black cursor-pointer">Prize</li>
+              <li className="hover:text-black">
+                <Link href="/">Home</Link>
+              </li>
+              <li className="hover:text-black">
+                <Link href="/about">About us</Link>
+              </li>
+              <li className="hover:text-black">
+                <Link href="/services">Services</Link>
+              </li>
+              <li className="hover:text-black">
+                <Link href="/contact">Contact us</Link>
+              </li>
             </ul>
           </div>
 
@@ -80,11 +89,6 @@ export default function Footer() {
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
               <Mail size={16} />
               <span>accounts@havex.co.za</span>
-            </div>
-
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Phone size={16} />
-              <span>(123)xxxxxxx</span>
             </div>
           </div>
 

@@ -165,7 +165,7 @@ export default function AboutFeaturesSection() {
             MACOS, IOS, ANDROID). OPTIONAL ADD-ONS INCLUDE:
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {alwaysOnCards.map((card, i) => (
               <motion.div
                 key={i}
@@ -173,7 +173,7 @@ export default function AboutFeaturesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-xl p-4 flex flex-col gap-2"
+                className="bg-white rounded-xl p-5 flex flex-col gap-2"
               >
                 <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wide">
                   {card.title}

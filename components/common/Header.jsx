@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -14,6 +13,83 @@ const navLinks = [
   { label: "Contact us", href: "/contact" },
 ];
 
+// Shared mobile drawer used by both variants
+function MobileDrawer({ open, onClose, isActive }) {
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black z-100"
+            onClick={onClose}
+          />
+
+          {/* Drawer panel */}
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="fixed top-0 right-0 h-full w-[78%] max-w-xs z-110 flex flex-col shadow-2xl"
+            style={{
+              background:
+                "linear-gradient(160deg, #0E2A47 0%, #1a4a6e 50%, #2FA4C8 100%)",
+            }}
+          >
+            {/* Drawer header */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-white/15">
+              <span className="text-white font-bold text-2xl tracking-widest">
+                HAVEX
+              </span>
+              <button
+                onClick={onClose}
+                className="text-white/70 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Nav links */}
+            <nav className="flex flex-col px-4 py-6 gap-1 flex-1">
+              {navLinks.map(({ label, href }, i) => (
+                <motion.div
+                  key={href}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.07 + 0.1 }}
+                >
+                  <Link
+                    href={href}
+                    onClick={onClose}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
+                      isActive(href)
+                        ? "bg-white/15 text-white border border-white/25"
+                        : "text-white/75 hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+
+            {/* Footer branding */}
+            <div className="px-6 py-4 border-t border-white/15">
+              <p className="text-white/40 text-xs">
+                © 2026 Havex. All rights reserved.
+              </p>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function Header({ variant = "default" }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -26,27 +102,20 @@ export default function Header({ variant = "default" }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [variant]);
 
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
 
-  const linkClass = (href) =>
-    `transition-all duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:rounded-full after:transition-all after:duration-200 ${
-      isActive(href)
-        ? "text-cyan-400 after:w-full after:bg-cyan-400"
-        : "text-black hover:text-cyan-500 after:w-0 hover:after:w-full after:bg-cyan-500"
-    }`;
-
-  const mobileLinkClass = (href) =>
-    `transition-colors duration-200 ${
-      isActive(href)
-        ? "text-cyan-500 font-semibold"
-        : "text-black hover:text-cyan-500"
-    }`;
-
   if (variant === "overlay") {
-    // Used inside hero sections (absolute positioned over background image)
     return (
       <>
         <motion.header
@@ -66,15 +135,11 @@ export default function Header({ variant = "default" }) {
                 : "backdrop-blur-md bg-white/40 border border-white/60"
             }`}
           >
-            <Link href="/">
-              <Image
-                src="/logo.png"
-                alt="HAVEX logo"
-                width={120}
-                height={40}
-                priority
-                className="object-contain"
-              />
+            <Link
+              href="/"
+              className={`font-bold text-2xl tracking-widest transition-colors ${scrolled ? "text-[#0E2A47]" : "text-white"}`}
+            >
+              HAVEX
             </Link>
 
             <nav className="hidden md:flex gap-8 text-sm font-medium">
@@ -82,12 +147,15 @@ export default function Header({ variant = "default" }) {
                 <Link
                   key={href}
                   href={href}
-                  className={`transition-all duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:rounded-full after:transition-all after:duration-200 ${
+                  className={`transition-all duration-200 relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:transition-all after:duration-200 ${
                     isActive(href)
-                      ? "text-cyan-500 after:w-full after:bg-cyan-500"
+                      ? "font-semibold after:w-full " +
+                        (scrolled
+                          ? "text-[#0E2A47] after:bg-[#0E2A47]"
+                          : "text-white after:bg-white")
                       : scrolled
-                        ? "text-gray-800 hover:text-cyan-500 after:w-0 hover:after:w-full after:bg-cyan-500"
-                        : "text-white hover:text-cyan-300 after:w-0 hover:after:w-full after:bg-cyan-300"
+                        ? "text-gray-700 hover:text-[#2FA4C8] after:w-0 hover:after:w-full after:bg-[#2FA4C8]"
+                        : "text-white/85 hover:text-white after:w-0 hover:after:w-full after:bg-white"
                   }`}
                 >
                   {label}
@@ -97,51 +165,18 @@ export default function Header({ variant = "default" }) {
 
             <button
               onClick={() => setOpen(true)}
-              className={`md:hidden ${scrolled ? "text-gray-800" : "text-white"}`}
+              className={`md:hidden p-1 rounded-md transition-colors ${scrolled ? "text-gray-800 hover:bg-gray-100" : "text-white hover:bg-white/20"}`}
             >
-              <Menu size={28} />
+              <Menu size={26} />
             </button>
           </div>
         </motion.header>
 
-        <AnimatePresence>
-          {open && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.4 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black z-30"
-                onClick={() => setOpen(false)}
-              />
-              <motion.div
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="fixed top-0 right-0 h-full w-[75%] max-w-sm bg-white z-40 shadow-xl p-6"
-              >
-                <div className="flex justify-end">
-                  <button onClick={() => setOpen(false)}>
-                    <X size={28} />
-                  </button>
-                </div>
-                <nav className="mt-10 flex flex-col gap-6 text-lg font-medium">
-                  {navLinks.map(({ label, href }) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      className={mobileLinkClass(href)}
-                      onClick={() => setOpen(false)}
-                    >
-                      {label}
-                    </Link>
-                  ))}
-                </nav>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        <MobileDrawer
+          open={open}
+          onClose={() => setOpen(false)}
+          isActive={isActive}
+        />
       </>
     );
   }
@@ -154,15 +189,11 @@ export default function Header({ variant = "default" }) {
         style={{ background: "linear-gradient(to right, #2FA4C8, #0E2A47)" }}
       >
         <div className="max-w-350 mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/">
-            <Image
-              src="/logo.png"
-              alt="HAVEX logo"
-              width={120}
-              height={40}
-              priority
-              className="object-contain"
-            />
+          <Link
+            href="/"
+            className="text-white font-bold text-2xl tracking-widest"
+          >
+            HAVEX
           </Link>
 
           <nav className="hidden md:flex gap-8 text-sm font-medium">
@@ -170,10 +201,10 @@ export default function Header({ variant = "default" }) {
               <Link
                 key={href}
                 href={href}
-                className={`transition-all duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:rounded-full after:transition-all after:duration-200 ${
+                className={`transition-all duration-200 relative after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:transition-all after:duration-200 ${
                   isActive(href)
-                    ? "text-cyan-600 after:w-full after:bg-cyan-600"
-                    : "text-white hover:text-cyan-600 after:w-0 hover:after:w-full after:bg-cyan-600"
+                    ? "text-white font-semibold after:w-full after:bg-white"
+                    : "text-white/75 hover:text-white after:w-0 hover:after:w-full after:bg-white"
                 }`}
               >
                 {label}
@@ -183,51 +214,18 @@ export default function Header({ variant = "default" }) {
 
           <button
             onClick={() => setOpen(true)}
-            className="md:hidden text-white"
+            className="md:hidden text-white hover:bg-white/20 p-1 rounded-md transition-colors"
           >
-            <Menu size={28} />
+            <Menu size={26} />
           </button>
         </div>
       </header>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black z-30"
-              onClick={() => setOpen(false)}
-            />
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="fixed top-0 right-0 h-full w-[75%] max-w-sm bg-white z-40 shadow-xl p-6"
-            >
-              <div className="flex justify-end">
-                <button onClick={() => setOpen(false)}>
-                  <X size={28} />
-                </button>
-              </div>
-              <nav className="mt-10 flex flex-col gap-6 text-lg font-medium">
-                {navLinks.map(({ label, href }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={mobileLinkClass(href)}
-                    onClick={() => setOpen(false)}
-                  >
-                    {label}
-                  </Link>
-                ))}
-              </nav>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <MobileDrawer
+        open={open}
+        onClose={() => setOpen(false)}
+        isActive={isActive}
+      />
     </>
   );
 }

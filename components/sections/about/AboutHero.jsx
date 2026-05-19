@@ -9,7 +9,7 @@ export default function AboutHero() {
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Image */}
       <Image
-        src="/hero.png"
+        src="/about.webp"
         alt="about hero background"
         fill
         priority

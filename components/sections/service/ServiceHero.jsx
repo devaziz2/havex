@@ -10,7 +10,7 @@ export default function ServiceHero() {
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Image */}
       <Image
-        src="/service.png"
+        src="/services.webp"
         alt="hero background"
         fill
         priority
